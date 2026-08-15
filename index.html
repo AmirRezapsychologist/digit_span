@@ -6,16 +6,18 @@
   <title>فراخنای ارقام (Digit Span)</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>body { user-select: none; -webkit-user-select: none; touch-action: manipulation; }</style>
+  <style>
+    body { user-select: none; -webkit-user-select: none; touch-action: manipulation; }
+  </style>
 </head>
 <body class="bg-slate-950 text-slate-100 flex flex-col justify-between min-h-screen p-4 font-sans">
   <header class="w-full max-w-md mx-auto pt-2">
     <div class="flex justify-between items-center text-xs text-slate-400 mb-1">
       <span class="font-bold text-violet-400" id="phaseTitle">حافظه فعال: بازخوانی مستقیم</span>
-      <span id="levelBadge">طول زنجیره: ۳</span>
+      <span id="levelBadge" class="bg-violet-900/50 text-violet-300 px-2 py-1 rounded">طول زنجیره: ۳</span>
     </div>
     <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
-      <div id="pBar" class="bg-violet-500 h-1.5 rounded-full w-1/4 transition-all"></div>
+      <div id="pBar" class="bg-violet-500 h-1.5 rounded-full w-0 transition-all duration-300"></div>
     </div>
   </header>
 
@@ -23,19 +25,34 @@
     <div id="gameCard" class="w-full bg-slate-900 border border-slate-800 p-5 rounded-2xl text-center space-y-4 shadow-xl">
       
       <!-- پرده نمایش زنجیره -->
-      <div id="displayArea" class="py-8 bg-slate-950 rounded-2xl border border-slate-800 shadow-inner">
-        <p class="text-xs text-slate-400 mb-2" id="instructionText">ارقام را با دقت مشاهده کنید:</p>
-        <div id="digitBox" class="text-5xl font-black text-violet-400 tracking-widest animate-pulse">آماده...</div>
+      <div id="displayArea" class="py-10 bg-slate-950 rounded-2xl border border-slate-800 shadow-inner">
+        <p class="text-xs text-slate-400 mb-3" id="instructionText">ارقام را با دقت مشاهده کنید:</p>
+        <div id="digitBox" class="text-6xl font-black text-violet-400 tracking-widest h-16 flex items-center justify-center">آماده...</div>
       </div>
 
-      <!-- صفحه کلید وارد کردن -->
-      <div id="inputArea" class="hidden space-y-3">
-        <div id="userInputDisplay" class="h-12 bg-slate-950 rounded-xl border border-violet-500/50 flex items-center justify-center text-2xl font-black text-white tracking-widest"></div>
+      <!-- صفحه کلید وارد کردن پاسخ -->
+      <div id="inputArea" class="hidden space-y-4">
+        <p class="text-xs text-slate-400" id="inputInstruction">حالا ارقام را وارد کنید:</p>
+        
+        <div id="userInputDisplay" class="h-14 bg-slate-950 rounded-xl border border-violet-500/50 flex items-center justify-center text-3xl font-black text-white tracking-widest shadow-inner"></div>
+        
+        <!-- کیپد عددی هاردکد شده برای جلوگیری از باگ -->
         <div class="grid grid-cols-3 gap-2">
-          ${[1,2,3,4,5,6,7,8,9].map(n => `<button onclick="typeDigit(${n})" class="bg-slate-800 hover:bg-slate-700 active:scale-95 py-3 rounded-xl font-bold text-xl">${n}</button>`).join('')}
-          <button onclick="clearInput()" class="bg-rose-950/80 hover:bg-rose-900 text-rose-300 py-3 rounded-xl font-bold text-xs">پاک کردن</button>
-          <button onclick="typeDigit(0)" class="bg-slate-800 hover:bg-slate-700 active:scale-95 py-3 rounded-xl font-bold text-xl">0</button>
-          <button onclick="submitSequence()" class="bg-violet-600 hover:bg-violet-500 text-white py-3 rounded-xl font-bold text-xs">تأیید</button>
+          <button onclick="typeDigit(1)" class="bg-slate-800 hover:bg-slate-700 active:scale-95 py-4 rounded-xl font-bold text-2xl shadow-md transition-all">1</button>
+          <button onclick="typeDigit(2)" class="bg-slate-800 hover:bg-slate-700 active:scale-95 py-4 rounded-xl font-bold text-2xl shadow-md transition-all">2</button>
+          <button onclick="typeDigit(3)" class="bg-slate-800 hover:bg-slate-700 active:scale-95 py-4 rounded-xl font-bold text-2xl shadow-md transition-all">3</button>
+          
+          <button onclick="typeDigit(4)" class="bg-slate-800 hover:bg-slate-700 active:scale-95 py-4 rounded-xl font-bold text-2xl shadow-md transition-all">4</button>
+          <button onclick="typeDigit(5)" class="bg-slate-800 hover:bg-slate-700 active:scale-95 py-4 rounded-xl font-bold text-2xl shadow-md transition-all">5</button>
+          <button onclick="typeDigit(6)" class="bg-slate-800 hover:bg-slate-700 active:scale-95 py-4 rounded-xl font-bold text-2xl shadow-md transition-all">6</button>
+          
+          <button onclick="typeDigit(7)" class="bg-slate-800 hover:bg-slate-700 active:scale-95 py-4 rounded-xl font-bold text-2xl shadow-md transition-all">7</button>
+          <button onclick="typeDigit(8)" class="bg-slate-800 hover:bg-slate-700 active:scale-95 py-4 rounded-xl font-bold text-2xl shadow-md transition-all">8</button>
+          <button onclick="typeDigit(9)" class="bg-slate-800 hover:bg-slate-700 active:scale-95 py-4 rounded-xl font-bold text-2xl shadow-md transition-all">9</button>
+          
+          <button onclick="clearInput()" class="bg-rose-950/80 hover:bg-rose-900 active:scale-95 text-rose-300 py-4 rounded-xl font-bold text-sm shadow-md transition-all">پاک کردن</button>
+          <button onclick="typeDigit(0)" class="bg-slate-800 hover:bg-slate-700 active:scale-95 py-4 rounded-xl font-bold text-2xl shadow-md transition-all">0</button>
+          <button onclick="submitSequence()" class="bg-violet-600 hover:bg-violet-500 active:scale-95 text-white py-4 rounded-xl font-bold text-sm shadow-md transition-all">تأیید</button>
         </div>
       </div>
 
@@ -50,6 +67,7 @@
     const tg = window.Telegram?.WebApp;
     if (tg) { tg.ready(); tg.expand(); }
 
+    // طراحی دقیق بر اساس استاندارد بلوک‌های وکسلر
     const TRIALS = [
       { sequence: [3, 8, 2], mode: 'forward', answer: '382' },
       { sequence: [5, 1, 9, 4], mode: 'forward', answer: '5194' },
@@ -61,38 +79,52 @@
     let correctCount = 0;
     let currentInput = "";
 
-    function runTrial() {
+    async function runTrial() {
       const t = TRIALS[currentIdx];
       currentInput = "";
+      
+      // آپدیت UI
       document.getElementById('userInputDisplay').innerText = "";
       document.getElementById('inputArea').classList.add('hidden');
       document.getElementById('displayArea').classList.remove('hidden');
       
       document.getElementById('phaseTitle').innerText = t.mode === 'forward' ? 'حافظه مستقیم (Forward)' : 'حافظه معکوس (Backward)';
       document.getElementById('levelBadge').innerText = `طول زنجیره: ${t.sequence.length}`;
-      document.getElementById('instructionText').innerText = t.mode === 'forward' ? 'ارقام را به همان ترتیب دیده شده وارد کنید:' : 'ارقام را به ترتیب معکوس (از آخر به اول) وارد کنید:';
       document.getElementById('pBar').style.width = `${((currentIdx + 1) / TRIALS.length) * 100}%`;
+      
+      if (t.mode === 'forward') {
+        document.getElementById('instructionText').innerText = 'ارقام را به همان ترتیبی که می‌بینید به خاطر بسپارید:';
+        document.getElementById('inputInstruction').innerText = 'ارقام را دقیقاً به همان ترتیب (از چپ به راست) وارد کنید:';
+      } else {
+        document.getElementById('instructionText').innerText = 'ارقام را ببینید، اما باید برعکس بازخوانی کنید:';
+        document.getElementById('inputInstruction').innerText = 'ارقام را به ترتیب معکوس (از آخر به اول) وارد کنید:';
+      }
 
       const digitBox = document.getElementById('digitBox');
-      let seqIdx = 0;
+      digitBox.innerText = "آماده...";
+      
+      // مکث اولیه قبل از شروع نمایش
+      await new Promise(r => setTimeout(r, 1200));
 
-      const timer = setInterval(() => {
-        if (seqIdx < t.sequence.length) {
-          digitBox.innerText = t.sequence[seqIdx];
-          seqIdx++;
-        } else {
-          clearInterval(timer);
-          digitBox.innerText = "✏️";
-          setTimeout(() => {
-            document.getElementById('displayArea').classList.add('hidden');
-            document.getElementById('inputArea').classList.remove('hidden');
-          }, 400);
-        }
-      }, 1000);
+      // نمایش استاندارد ارقام (۱ ثانیه نمایش، ۲۵۰ میلی‌ثانیه پرده خالی)
+      for (let i = 0; i < t.sequence.length; i++) {
+        digitBox.innerText = t.sequence[i];
+        await new Promise(r => setTimeout(r, 1000));
+        
+        digitBox.innerText = "";
+        await new Promise(r => setTimeout(r, 250));
+      }
+
+      // پایان نمایش، آماده برای دریافت ورودی
+      digitBox.innerText = "✏️";
+      setTimeout(() => {
+        document.getElementById('displayArea').classList.add('hidden');
+        document.getElementById('inputArea').classList.remove('hidden');
+      }, 500);
     }
 
     window.typeDigit = function(num) {
-      if (currentInput.length < 6) {
+      if (currentInput.length < 8) { // محدودیت امن برای زنجیره‌های بلندتر
         currentInput += num;
         document.getElementById('userInputDisplay').innerText = currentInput;
       }
@@ -104,9 +136,11 @@
     };
 
     window.submitSequence = function() {
+      // بررسی درستی جواب
       if (currentInput === TRIALS[currentIdx].answer) {
         correctCount++;
       }
+      
       currentIdx++;
       if (currentIdx < TRIALS.length) {
         runTrial();
@@ -116,6 +150,7 @@
     };
 
     function finishSubtest() {
+      // نرمال‌سازی نمرات بر اساس ۴ سوال برای مینی‌گیم
       const scaledScoreMap = [4, 7, 10, 13, 16];
       const scaledScore = scaledScoreMap[correctCount];
 
@@ -123,25 +158,25 @@
         test_name: "WISC-V Digit Span",
         timestamp: new Date().toISOString(),
         raw_score: correctCount,
-        max_span: correctCount + 2,
         scaled_score: scaledScore
       };
 
       document.getElementById('gameCard').innerHTML = `
-        <div class="space-y-3 py-6">
-          <div class="text-emerald-400 text-4xl font-bold">✓</div>
-          <h2 class="text-lg font-bold text-white">آزمون فراخنای ارقام به پایان رسید</h2>
-          <p class="text-xs text-slate-400">اطلاعات با موفقیت ثبت شد.</p>
+        <div class="space-y-4 py-8">
+          <div class="text-emerald-400 text-5xl font-bold drop-shadow-md">✓</div>
+          <h2 class="text-xl font-bold text-white">حافظه ارقام تکمیل شد</h2>
+          <p class="text-sm text-slate-400">اطلاعات پردازش و ثبت گردید.</p>
         </div>
       `;
 
       if (tg) {
         tg.sendData(JSON.stringify(report));
-        setTimeout(() => tg.close(), 500);
+        setTimeout(() => tg.close(), 600);
       }
     }
 
-    setTimeout(runTrial, 800);
+    // شروع اولین سوال با یک مکث کوتاه برای لود شدن کامل وب‌اپ
+    setTimeout(runTrial, 500);
   </script>
 </body>
 </html>
